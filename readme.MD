@@ -7,7 +7,7 @@ Interaction with the Amazon Api for vendors called MWS
 
 ### Installation:
 ```bash
-$ composer require matteocacciola/amazon-mws
+$ composer require inventos/amazon-mws
 ```
 ### Initiate the client
 ```php

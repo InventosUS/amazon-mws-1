@@ -1618,26 +1618,27 @@ class MWSClient
         ];
 
         $fulfillmentData = [];
-        $fulfillmentData['ShippingMethod'] = $data['shippingMethod'];
-
-        if (!empty($data['trackingCode'])) {
-            $fulfillmentData['ShipperTrackingNumber'] = $data['trackingCode'];
-        }
 
         if (!empty($data['carrierCode'])) {
             $fulfillmentData['CarrierCode'] = $data['carrierCode'];
         } elseif (!empty($data['carrierName'])) {
             $fulfillmentData['CarrierName'] = $data['carrierName'];
         }
+        
+        $fulfillmentData['ShippingMethod'] = $data['shippingMethod'];
 
-        $fulfillmentData['Item'] = [];
+        if (!empty($data['trackingCode'])) {
+            $fulfillmentData['ShipperTrackingNumber'] = $data['trackingCode'];
+        }
+
+        /*$fulfillmentData['Item'] = [];
         foreach ($data['items'] as $item) {
             $fulfillmentData['Item'][] = [
                 'MerchantOrderItemID' => $item['merchantOrderItemId'],
                 'MerchantFulfillmentItemID' => $item['merchantFullfillmentItemId'],
                 'Quantity' => $item['quantity']
             ];
-        }
+        }*/
 
         $fulfillmentMessage['OrderFulfillment']['FulfillmentData'] = $fulfillmentData;
 
@@ -1691,11 +1692,11 @@ class MWSClient
                 'AmazonOrderID' => $orderId,
                 'MerchantOrderID' => $data['merchantOrderId'],
                 'StatusCode' => $data['statusCode'],
-                'Item' => []
+                //'Item' => [] //Apparently no need to pass this at all for the order to be cancelled
             ]
         ];
 
-        $fulfillmentItems = [];
+        /*$fulfillmentItems = [];
         $items = $data['items'] ?? [];
         foreach ($items as $item) {
             $temp = [
@@ -1708,9 +1709,9 @@ class MWSClient
             }
 
             $fulfillmentItems[] = $temp;
-        }
+        }*/ //Apparently no need to do this at all to cancel an order
 
-        $fulfillmentMessage['OrderAcknowledgement']['Item'] = $fulfillmentItems;
+        //$fulfillmentMessage['OrderAcknowledgement']['Item'] = $fulfillmentItems; //Apparently, no need to pass this info at all for the order to be cancelled
 
         return $fulfillmentMessage;
     }
